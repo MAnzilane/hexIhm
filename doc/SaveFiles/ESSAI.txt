@@ -1,0 +1,27 @@
+\Hex
+\dim 10
+\board
+* . . . . . . . . o 
+. o . . . . . . . . 
+. . . . . . . . . . 
+. . . . . . * . . . 
+. . . . * . . . . . 
+. . . * . . . . . . 
+. . . . . . o . . . 
+. . . . . . o . . * 
+. . . . . . . . . . 
+. . . . . . . . . o 
+\endboard
+\game
+\play * 0 0
+\play o 1 1
+\play * 3 6
+\play o 6 6
+\play * 4 4
+\play o 7 6
+\play * 7 9
+\play o 0 9
+\play * 5 3
+\play o 9 9
+\endgame
+\endhex
