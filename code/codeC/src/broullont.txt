@@ -1,0 +1,67 @@
+srand((unsigned int)time(NULL));
+bool joueur = true;
+int stop = 0;
+Piece p;
+int pos;
+int i = 0;
+Graph g = createGraph(4);
+char * str = getSpotsFromFile("/home/manzilane/Documents/IHMenSDL/doc/config/size4.txt");
+g = createBoardGraph(g, str, &i);
+ReducedGraph * rg = createReducedGraph(g);
+printBoard(g);
+while (i < getNbVertexGraph(g) && stop == 0){
+    if (joueur){
+        //p = createPiece(BLACK);
+        //pos = calculateHexCoordinates(p.coord.x, p.coord.y, getSizeGraph(g));
+
+        pos = minimax(g, 3);
+        replaceVertexGraph(g, pos, BLACK);
+        printf("position du sommet adjacent des sommet \n");
+        //postUpPositionAdjacentVertex(pos, g);
+        stop = searchGroup(rg->blackHashTab, g, pos, BLACK);
+    }else {
+        p = createPiece(WHITE);
+        pos = calculateHexCoordinates(p.coord.x, p.coord.y, getSizeGraph(g));
+        replaceVertexGraph(g, pos, WHITE);
+        printf("position du sommet adjacent des sommet \n");
+        //postUpPositionAdjacentVertex(pos, g);
+        stop = searchGroup(rg->whiteHashTab, g, pos, WHITE);
+    }
+    printBoard(g);
+    joueur = !joueur;
+    i++;
+}
+
+if (stop){
+    printf("groupe gagnant trouvé\nvaleur de stop = %d\n", stop);
+}
+free(str);
+destroyReducedGraph(rg);
+destroyGraph(g);
+
+
+int x = -1; int y = -1;
+while (go == 1) {
+    SDL_WaitEvent(&event);
+    switch(event.type) {
+        case SDL_QUIT:
+            go = 0;
+            break;
+        case SDL_MOUSEBUTTONUP:
+            if (event.button.button == SDL_BUTTON_RIGHT) {
+                x = event.button.x; y= event.button.y;
+                if (coordOK(coordX, coordY, &x, &y, 14)) {
+                    placePiece(screen, x, y, blueHex);
+                }
+            }else if (event.button.button == SDL_BUTTON_LEFT) {
+                x = event.button.x; y= event.button.y;
+                if (coordOK(coordX, coordY, &x, &y, 14)) {
+                    placePiece(screen, x, y, redHex);
+                }
+            }
+            break;
+    }
+    // SDL_BlitSurface(blueHex, NULL, screen, &posNewHex);
+    SDL_Flip(screen);
+}
+// ppause();

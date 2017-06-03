@@ -24,7 +24,7 @@
 #include <dirent.h> /* to run through a directory */
 
 /*gets the board spots from a file named fileName
-(either in the SaveFiles directory if loaded game 
+(either in the SaveFiles directory if loaded game
 or the config directory if new)*/
 char * getSpotsFromFile(const char * fileName);
 

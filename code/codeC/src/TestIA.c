@@ -13,46 +13,29 @@
 #include "Graph.h"
 #include "ReducedGraph.h"
 #include "TreeOfGameIA.h"
+#include "FileProcessing.h"
+#include "sdl.h"
+
+
+
 int main(int argc, const char * argv[]) {
-    srand((unsigned int)time(NULL));
-    bool joueur = true;
-    int stop = 0;
-    Piece p;
-    int pos;
-    int i = 0;
-    Graph g = createGraph(4);
-    char * str = getSpotsFromFile("../../doc/config/size4.txt");
-    g = createBoardGraph(g, str, &i);
-    ReducedGraph * rg = createReducedGraph(g);
-    printBoard(g);
-    while (i < getNbVertexGraph(g) && stop == 0){
-        if (joueur){
-            //p = createPiece(BLACK);
-            //pos = calculateHexCoordinates(p.coord.x, p.coord.y, getSizeGraph(g));
+    SDL_Surface *screen = NULL;
+    SDL_Init(SDL_INIT_VIDEO);
 
-            pos = minimax(g, 3);
-            replaceVertexGraph(g, pos, BLACK);
-            printf("position du sommet adjacent des sommet \n");
-            //postUpPositionAdjacentVertex(pos, g);
-            stop = searchGroup(rg->blackHashTab, g, pos, BLACK);
-        }else {
-            p = createPiece(WHITE);
-            pos = calculateHexCoordinates(p.coord.x, p.coord.y, getSizeGraph(g));
-            replaceVertexGraph(g, pos, WHITE);
-            printf("position du sommet adjacent des sommet \n");
-            //postUpPositionAdjacentVertex(pos, g);
-            stop = searchGroup(rg->whiteHashTab, g, pos, WHITE);
-        }
-        printBoard(g);
-        joueur = !joueur;
-        i++;
-    }
+    //to set icon on the game window
+    SDL_WM_SetIcon(IMG_Load("/home/manzilane/Documents/IHMenSDL/doc/data/icon.png"), NULL);
 
-    if (stop){
-        printf("groupe gagnant trouvé\nvaleur de stop = %d\n", stop);
+    if ((screen = SDL_SetVideoMode(WIGTH, HEIGHT, 32, SDL_HWSURFACE | SDL_DOUBLEBUF)) == NULL) {
+        fprintf(stderr, "sory the scree don't init : %s\n", SDL_GetError());
+        exit(-1);
     }
-    free(str);
-    destroyReducedGraph(rg);
-    destroyGraph(g);
-    return 0;
+    //title of windows
+    SDL_WM_SetCaption("HEX GAME", NULL);
+
+    SDL_FillRect(screen, NULL, SDL_MapRGB(screen->format, 255, 255, 255));
+
+    menuLoop(screen);
+
+    SDL_Quit();
+    return EXIT_SUCCESS;
 }

@@ -134,9 +134,10 @@ bool searchGroup(TabHash *tabH, Graph g, int pos, char color) {
                             newGroup = groupUnion(vAdjList, vList, g);
                         }
                         tabH = hashFonctionRg(tabH, newGroup);
+                        tabH->nbGroups--; //modify
                     } // if its in the same group, nothing is done
-                }else if (!isInGroup(vAdj) && isInGroup(v)) { 
-                    /*they aren't in the same group but they are adjacent, 
+                }else if (!isInGroup(vAdj) && isInGroup(v)) {
+                    /*they aren't in the same group but they are adjacent,
                     vAdj is put into v's group*/
                     posAdj = calculateHexCoordinates(vAdj->coord.x, vAdj->coord.y,
                         getSizeGraph(g));
@@ -148,7 +149,7 @@ bool searchGroup(TabHash *tabH, Graph g, int pos, char color) {
                     newGroup = vAdjList;
                 }else {
                     //the two vertexes are solo, so a a new group is created
-                    posAdj = calculateHexCoordinates(vAdj->coord.x, 
+                    posAdj = calculateHexCoordinates(vAdj->coord.x,
                         vAdj->coord.y, getSizeGraph(g));
                     newGroup = createNewGroup(g, pos, posAdj);
                     tabH = hashFonctionRg(tabH, newGroup);

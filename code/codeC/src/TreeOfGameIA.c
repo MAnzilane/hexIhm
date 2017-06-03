@@ -79,6 +79,7 @@ int max(Graph gbis, int profondeur) {
 //s'il y' a un gagnant
 int endGame(const Graph g, int *IA, int *ADV , int *bestGroup) {
     Graph gbis = newGrpah(g);
+    int res = 0;
     int sizeTab = getNbVertexGraph(gbis);
     TabHash * blackHashTab = createTabHashRg(sizeTab);
     TabHash * whiteHashTab = createTabHashRg(sizeTab);
@@ -87,11 +88,11 @@ int endGame(const Graph g, int *IA, int *ADV , int *bestGroup) {
         if (gbis->v[i]->color != EMPTY) {
             if (gbis->v[i]->color == BLACK) {
                 if (searchGroup(blackHashTab, gbis, i, BLACK) == 1) {
-                    return 1;
+                    res = 1;
                 }
             }else {
                 if (searchGroup(whiteHashTab, gbis, i, WHITE) == 1) {
-                    return -1;
+                    res = -1;
                 }
             }
         }
@@ -118,7 +119,7 @@ int endGame(const Graph g, int *IA, int *ADV , int *bestGroup) {
     destroyTabHash(blackHashTab, getNbVertexGraph(gbis));
     destroyTabHash(whiteHashTab, getNbVertexGraph(gbis));
     destroyGraph(gbis);
-    return 0;
+    return res;
 }
 
 int heuristique(const Graph g) {
@@ -138,26 +139,26 @@ int heuristique(const Graph g) {
     }
     destroyGraph(gbis);
     //printf("le best group est %d\n",bestGroup);
-//    if (nbGroupIA < nbGroupADV && bestGroup == 2 ) {
-//        return -1;
-//    }else if (nbGroupIA < nbGroupADV && bestGroup == 1){
-//        return 1;
-//    }else if (nbGroupIA > nbGroupADV && bestGroup == 2){
-//        return -1;
-//    }else{
-//        return 1;
-//    }
-    if (bestGroup == 1) {
-        return 1;
-    }else if (bestGroup == 2) {
-        return -1;
-    }else {
-        if (nbGroupADV <= nbGroupIA) {
-            return 1;
-        }else {
-            return -1;
-        }
-    }
+   if (nbGroupIA < nbGroupADV && bestGroup == 2 ) {
+       return -1;
+   }else if (nbGroupIA < nbGroupADV && bestGroup == 1){
+       return 1;
+   }else if (nbGroupIA > nbGroupADV && bestGroup == 2){
+       return -1;
+   }else{
+       return 1;
+   }
+    // if (bestGroup == 1) {
+    //     return 1;
+    // }else if (bestGroup == 2) {
+    //     return -1;
+    // }else {
+    //     if (nbGroupADV <= nbGroupIA) {
+    //         return 1;
+    //     }else {
+    //         return -1;
+    //     }
+    // }
 }
 
 bool hasSide(List *l , int side1, int side2 ){
